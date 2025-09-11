@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
-import { ArrowUpRight, Github, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { motion, useMotionValue, useSpring, useInView } from 'framer-motion';
+import { ArrowUpRight, Github, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // --- Types ---
 interface Project {
@@ -29,7 +29,7 @@ const projects: Project[] = [
     title: "NEXUS",
     subtitle: "E-Commerce Revolution",
     description: "Redefining online shopping with immersive product experiences and seamless checkout flows that convert visitors into loyal customers.",
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2340&auto=format&fit=crop",
+    image: "https://lebwork.b-cdn.net/stuff/photo-1441986300917-64674bd600d8.jpg",
     tech: ["React", "Node.js", "Three.js", "Stripe"],
     github: "#",
     live: "#",
@@ -41,7 +41,7 @@ const projects: Project[] = [
     title: "VELOCITY",
     subtitle: "Financial Innovation",
     description: "Next-generation banking platform that transforms complex financial operations into intuitive, secure, and lightning-fast experiences.",
-    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2340&auto=format&fit=crop",
+    image: "https://lebwork.b-cdn.net/stuff/images_PC%20System.jpg",
     tech: ["React Native", "TypeScript", "Blockchain", "AI"],
     github: "#",
     live: "#",
@@ -53,7 +53,7 @@ const projects: Project[] = [
     title: "LUMINA",
     subtitle: "Brand Transformation",
     description: "Complete visual identity system that captures the essence of sustainable luxury and resonates across all digital touchpoints.",
-    image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=2340&auto=format&fit=crop",
+    image: "https://lebwork.b-cdn.net/stuff/istockphoto-1152845300-2048x2048.jpg",
     tech: ["Figma", "After Effects", "WebGL", "Webflow"],
     live: "#",
     year: "2024",
@@ -187,7 +187,7 @@ const ProjectPanel: React.FC<{
               }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              {project.tech.map((tech, techIndex) => (
+              {project.tech.map((tech) => (
                 <motion.span
                   key={tech}
                   className="px-3 py-1.5 text-sm font-medium text-white/80 border border-white/20 rounded-full backdrop-blur-sm"
@@ -284,8 +284,6 @@ const ProjectPanel: React.FC<{
 };
 
 // --- Main Horizontal Projects Component ---
-import { useInView } from 'framer-motion';
-
 const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -304,8 +302,8 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
   // Detect if the section is in view
   const isInView = useInView(containerRef, { amount: 0.5, once: false });
 
-  // Navigation functions
-  const scrollToProject = (index: number) => {
+  // Navigation functions - wrapped in useCallback to prevent unnecessary re-renders
+  const scrollToProject = useCallback((index: number) => {
     if (!scrollContainerRef.current) return;
     
     const container = scrollContainerRef.current;
@@ -316,19 +314,19 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
     // Update navigation state
     setCanScrollLeft(index > 0);
     setCanScrollRight(index < projects.length - 1);
-  };
+  }, [x]);
 
-  const nextProject = () => {
+  const nextProject = useCallback(() => {
     if (currentIndex < projects.length - 1) {
       scrollToProject(currentIndex + 1);
     }
-  };
+  }, [currentIndex, scrollToProject]);
 
-  const prevProject = () => {
+  const prevProject = useCallback(() => {
     if (currentIndex > 0) {
       scrollToProject(currentIndex - 1);
     }
-  };
+  }, [currentIndex, scrollToProject]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -339,7 +337,7 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentIndex]);
+  }, [nextProject, prevProject]);
 
   // Touch/swipe handling for mobile
   useEffect(() => {
@@ -385,7 +383,7 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
         container.removeEventListener('touchend', handleTouchEnd);
       };
     }
-  }, [currentIndex]);
+  }, [nextProject, prevProject]);
 
   return (
     <section 

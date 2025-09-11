@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion, useTransform, useScroll } from 'framer-motion';
 import LiquidEther from './ui/LiquidEther';
 import Navbar from './Navbar';
@@ -11,43 +11,23 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ onScrollProgress }) => {
   const containerRef = useRef<HTMLElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
-  // Scroll progress tracking
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
   });
 
-  // Pass scroll progress to parent
   useEffect(() => {
     return scrollYProgress.on("change", (progress) => {
       onScrollProgress?.(progress);
     });
   }, [scrollYProgress, onScrollProgress]);
 
-  // Mouse tracking for subtle interactions
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      const { innerWidth, innerHeight } = window;
-      setMousePosition({ 
-        x: (clientX / innerWidth - 0.5) * 20,
-        y: (clientY / innerHeight - 0.5) * 20
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  // Transform values based on scroll
   const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
     <>
-      {/* Navbar - positioned above everything */}
       <Navbar scrollProgress={scrollYProgress.get()} />
       
       <section 
@@ -77,7 +57,6 @@ const Hero: React.FC<HeroProps> = ({ onScrollProgress }) => {
           />
         </div>
 
-        {/* Content - Higher z-index and pointer events enabled */}
         <motion.div 
           style={{ y, opacity }}
           className="relative z-20 text-center text-white px-6 max-w-4xl mx-auto pointer-events-auto"

@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import StaggeredMenu from './ui/StaggeredMenu';
 
 interface NavbarProps {
@@ -14,12 +15,12 @@ const Navbar: React.FC<NavbarProps> = ({ scrollProgress = 0 }) => {
   
   const isScrolled = scrollProgress > 0.1;
 
-  const navItems = [
+  const navItems = useMemo(() => [
     { label: 'Home', ariaLabel: 'Go to Home section', link: '#home' },
     { label: 'Services', ariaLabel: 'Go to Services section', link: '#services' },
     { label: 'Projects', ariaLabel: 'Go to Projects section', link: '#projects' },
     { label: 'Contact', ariaLabel: 'Go to Contact section', link: '#contact' },
-  ];
+  ], []);
 
   const socialItems = [
     { label: 'Twitter', link: 'https://twitter.com' },
@@ -43,7 +44,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrollProgress = 0 }) => {
   };
 
   // Handle navigation clicks
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, link: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, link: string) => {
     e.preventDefault();
     const sectionId = link.replace('#', '');
     smoothScrollTo(sectionId);
@@ -168,7 +169,13 @@ const Navbar: React.FC<NavbarProps> = ({ scrollProgress = 0 }) => {
               className="block"
               onClick={(e) => handleNavClick(e, '#home')}
             >
-              <img src="https://lebwork.b-cdn.net/stuff/mahmoud.png" alt="iDevelopit Logo" className="w-12 h-12" />
+              <Image 
+                src="https://lebwork.b-cdn.net/stuff/mahmoud.png" 
+                alt="iDevelopit Logo" 
+                width={48}
+                height={48}
+                className="w-12 h-12" 
+              />
             </a>
           </motion.div>
 
@@ -213,9 +220,9 @@ const Navbar: React.FC<NavbarProps> = ({ scrollProgress = 0 }) => {
             transition={{ duration: 0.5, delay: 0.8 }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={(e) => handleNavClick(e as any, '#contact')}
+            onClick={(e) => handleNavClick(e, '#contact')}
           >
-            Let's Talk
+            Let&apos;s Talk
           </motion.button>
         </div>
       </motion.nav>

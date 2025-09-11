@@ -112,7 +112,7 @@ const ContactForm = () => {
             transition={{ delay: 0.8, duration: 0.6 }}
             className="text-gray-400 text-lg"
           >
-            We'll get back to you within 24 hours.
+            We&apos;ll get back to you within 24 hours.
           </motion.p>
         </motion.div>
       </div>
@@ -136,7 +136,7 @@ const ContactForm = () => {
         {/* Header */}
         <motion.div variants={itemVariants} className="text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Let's <span className="bg-white text-black px-2 py-1 rounded-md">Talk</span>
+            Let&apos;s <span className="bg-white text-black px-2 py-1 rounded-md">Talk</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             Ready to transform your ideas into reality? Get in touch with our expert team.

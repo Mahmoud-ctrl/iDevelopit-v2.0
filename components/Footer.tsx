@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -21,7 +22,7 @@ const Footer: React.FC = () => {
     }
   };
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, link: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, link: string) => {
     e.preventDefault();
     const sectionId = link.replace('#', '');
     smoothScrollTo(sectionId);
@@ -57,9 +58,11 @@ const Footer: React.FC = () => {
               whileHover={{ scale: 1.05, rotate: 5 }}
               transition={{ duration: 0.2 }}
             >
-              <img 
+              <Image 
                 src="https://lebwork.b-cdn.net/stuff/mahmoud.png" 
                 alt="iDevelopit Logo" 
+                width={40}
+                height={40}
                 className="w-10 h-10"
               />
             </motion.div>
@@ -81,7 +84,7 @@ const Footer: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            {navLinks.map((link, index) => (
+            {navLinks.map((link) => (
               <motion.a
                 key={link.label}
                 href={link.link}
@@ -106,7 +109,7 @@ const Footer: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            {socialLinks.map((social, index) => (
+            {socialLinks.map((social) => (
               <motion.a
                 key={social.label}
                 href={social.link}
@@ -158,7 +161,7 @@ const Footer: React.FC = () => {
 
           {/* Back to Top */}
           <motion.button
-            onClick={(e) => handleNavClick(e as any, '#home')}
+            onClick={(e) => handleNavClick(e, '#home')}
             className="text-gray-500 hover:text-white transition-colors duration-300 text-xs tracking-wide uppercase group flex items-center space-x-2"
             whileHover={{ y: -2 }}
             whileTap={{ y: 0 }}

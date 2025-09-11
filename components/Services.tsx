@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, ArrowLeft, X, Zap, Star, Award, TrendingUp } from 'lucide-react';
+import { ArrowRight, X, Zap, Star, Award, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 interface Service {
   id: number;
@@ -62,7 +63,7 @@ const ServicesSection = () => {
       tagline: "INTERFACES THAT DELIGHT & CONVERT",
       description: "We craft intuitive and beautiful user experiences based on research and user psychology to increase engagement and conversion rates.",
       results: "250% conversion rate increase through strategic design",
-      image: "https://images.unsplash.com/photo-1586717799252-bd134ad00e26?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      image: "https://lebwork.b-cdn.net/stuff/photo-1586717799252-bd134ad00e26.jpg",
       color: "#FF6B00",
       bgGradient: "from-orange-900 via-red-900 to-black",
       size: "tall",
@@ -77,7 +78,7 @@ const ServicesSection = () => {
       tagline: "PLATFORMS BUILT FOR GROWTH",
       description: "Online stores architected for maximum conversion and scalability. Every element is optimized to turn browsers into loyal customers.",
       results: "$2M+ revenue generated for clients in first year",
-      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
+      image: "https://lebwork.b-cdn.net/stuff/photo-1556742049-0cfed4f6a45d.jpg",
       color: "#00FF88",
       bgGradient: "from-emerald-900 via-green-900 to-black",
       size: "wide",
@@ -92,7 +93,7 @@ const ServicesSection = () => {
       tagline: "INSIGHTS THAT DRIVE GROWTH",
       description: "We implement robust tracking systems that provide actionable insights, helping you understand your customers and optimize for growth.",
       results: "500% ROI improvement through data optimization",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      image: "https://lebwork.b-cdn.net/stuff/photo-1551288049-bebda4e38f71.jpg",
       color: "#FFD700",
       bgGradient: "from-yellow-900 via-amber-900 to-black",
       size: "small",
@@ -107,7 +108,7 @@ const ServicesSection = () => {
       tagline: "BLUEPRINTS FOR SUCCESS",
       description: "Comprehensive digital strategies and technology roadmaps that align with your business goals and give you a competitive edge in the market.",
       results: "10x competitive advantage through strategic planning",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80",
+      image: "https://lebwork.b-cdn.net/stuff/photo-1460925895917-afdab827c52f.jpg",
       color: "#8A2BE2",
       bgGradient: "from-violet-900 via-purple-900 to-black",
       size: "medium",
@@ -122,7 +123,7 @@ const ServicesSection = () => {
       tagline: "STREAMLINED BUSINESS OPERATIONS",
       description: "Custom POS solutions that integrate seamlessly with your business operations, inventory, and customer management systems.",
       results: "40% faster checkout times and improved accuracy",
-      image: "https://images.unsplash.com/photo-1556740758-90de374c12ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+      image: "https://lebwork.b-cdn.net/stuff/photo-1556740758-90de374c12ad.jpg",
       color: "#00FFB7",
       bgGradient: "from-teal-900 via-green-900 to-black",
       size: "small",
@@ -137,7 +138,7 @@ const ServicesSection = () => {
       tagline: "YOUR VISION, OUR EXPERTISE",
       description: "Bespoke software solutions designed specifically for your unique business requirements and challenges.",
       results: "100% client satisfaction with custom implementations",
-      image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=2125&q=80",
+      image: "https://lebwork.b-cdn.net/stuff/photo-1555949963-aa79dcee981c.jpg",
       color: "#FF4081",
       bgGradient: "from-rose-900 via-pink-900 to-black",
       size: "wide",
@@ -214,10 +215,13 @@ const ServicesSection = () => {
       >
         {/* Hero Image Overlay */}
         <div className="absolute inset-0">
-          <img 
+          <Image 
             src={service.image} 
             alt={service.title}
-            className={`w-full h-full object-cover transition-all duration-700 ${isTransitioning ? 'scale-110 opacity-0' : 'scale-105 opacity-25'}`}
+            fill
+            className={`object-cover transition-all duration-700 ${isTransitioning ? 'scale-110 opacity-0' : 'scale-105 opacity-25'}`}
+            priority
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-black/70" />
         </div>
@@ -366,10 +370,12 @@ const ServicesSection = () => {
                 >
                   {/* Background Image */}
                   <div className="absolute inset-0">
-                    <img 
+                    <Image 
                       src={service.image} 
                       alt={service.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     <div className="absolute inset-0 bg-black/75 group-hover:bg-black/60 transition-all duration-500" />
                   </div>
