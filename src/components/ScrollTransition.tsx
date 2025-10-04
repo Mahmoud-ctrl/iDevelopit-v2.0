@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef, useMemo } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { Highlighter } from "./ui/highlighter"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -32,7 +33,7 @@ const HorizontalScrollSection = () => {
   const sliderRef = useRef<HTMLDivElement>(null)
 
   const words = [
-    "We", "Build", "What", "You","Imagine", "Digital", "Solutions", "That",
+    "Crafting", "Modern", "Web", "Applications","With", "Digital", "Solutions", "That",
     "Scale", "Seamlessly", "Across", "Every", "Platform", "And", "Device", "Flawlessly",
   ]
 
@@ -174,6 +175,58 @@ const HorizontalScrollSection = () => {
     return () => ctx.revert()
   }, [])
 
+  const getWordContent = (word: string, index: number) => {
+    const baseContent = index % 5 === 3 ? (
+      <ScrambleWord>{word}</ScrambleWord>
+    ) : (
+      <span className="word-animate inline-block">{word}</span>
+    )
+    
+    // Apply highlighter to specific words while preserving animations
+    switch (index) {
+      case 0: // "Crafting"
+        return (
+          <Highlighter action="underline" color="#FF6B6B" isView={true}>
+            {baseContent}
+          </Highlighter>
+        )
+      case 2: // "Web"
+        return (
+          <Highlighter action="highlight" color="#4ECDC4" isView={true}>
+            {baseContent}
+          </Highlighter>
+        )
+      case 4: // "With"
+        return (
+          <Highlighter action="circle" color="#FFE66D" isView={true}>
+            {baseContent}
+          </Highlighter>
+        )
+      case 6: // "Solutions"
+        return (
+          <Highlighter action="box" color="#A8E6CF" isView={true}>
+            {baseContent}
+          </Highlighter>
+        )
+      case 8: // "Scale"
+        return (
+          <Highlighter action="underline" color="#FFB3BA" isView={true}>
+            {baseContent}
+          </Highlighter>
+        )
+      case 12: // "Platform"
+        return (
+          <span className="text-black">
+          <Highlighter action="highlight" color="#FFDFBA" isView={true}>
+            {baseContent}
+          </Highlighter>
+          </span>
+        )
+      default:
+        return baseContent
+    }
+  }
+
   return (
     <div ref={componentRef} className="relative h-[100vh] w-full overflow-hidden bg-black text-white font-sans">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -228,11 +281,7 @@ const HorizontalScrollSection = () => {
           {words.map((word, index) => (
             <div key={index} className="word-container flex-shrink-0 px-4 md:px-8">
               <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold tracking-tighter">
-                {index % 5 === 3 ? (
-                  <ScrambleWord>{word}</ScrambleWord>
-                ) : (
-                  <span className="word-animate inline-block">{word}</span>
-                )}
+                {getWordContent(word, index)}
               </h1>
             </div>
           ))}

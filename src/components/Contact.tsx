@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, easeOut } from 'framer-motion';
-import { Send, User, Mail, MessageSquare, Phone, Share2, Clock, CheckCircle } from 'lucide-react';
-import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
+import { Send, User, Mail, MessageSquare, Phone, Share2, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +14,7 @@ const ContactForm = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState('');
   const [focusedField, setFocusedField] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -23,29 +23,54 @@ const ContactForm = () => {
       ...prev,
       [name]: value
     }));
+    // Clear error when user starts typing
+    if (error) setError('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError('');
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    
-    // Reset form after success
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          subject: formData.subject,
+          message: formData.message
+        }),
       });
-    }, 3000);
+
+      const result = await response.json();
+
+      if (result.success) {
+        setIsSubmitted(true);
+        // Reset form after success
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            subject: '',
+            message: ''
+          });
+        }, 3000);
+      } else {
+        setError(result.error || 'Failed to send message. Please try again.');
+      }
+    } catch (err) {
+      setError('Network error. Please check your connection and try again.');
+      console.error('Error submitting form:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const containerVariants = {
@@ -112,7 +137,7 @@ const ContactForm = () => {
             transition={{ delay: 0.8, duration: 0.6 }}
             className="text-gray-400 text-lg"
           >
-            We&apos;ll get back to you within 24 hours.
+            I&apos;ll get back to you within 24 hours.
           </motion.p>
         </motion.div>
       </div>
@@ -145,6 +170,7 @@ const ContactForm = () => {
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Contact Info Cards */}
+          <div className='lg:mt-9'>
           <motion.div variants={itemVariants} className="lg:col-span-1 space-y-6">
             {/* Contact Info */}
             <motion.div
@@ -159,7 +185,7 @@ const ContactForm = () => {
                 <div>
                   <h3 className="text-white font-semibold">Call Us</h3>
                   <p className="text-gray-400">
-                    <a href="tel:+96171736695">71 736695</a> - <a href="tel:+96181943978">81 943978</a>
+                    <a href="tel:+96171736695">+961 71 736695</a>
                   </p>
                 </div>
               </div>
@@ -176,7 +202,7 @@ const ContactForm = () => {
                 </div>
                 <div>
                   <h3 className="text-white font-semibold">Email Us</h3>
-                  <p className="text-gray-400"><a href="mailto:contact@idevelopit.dev">contact@idevelopit.dev</a></p>
+                  <p className="text-gray-400"><a href="mailto:baderaldinmahmud@gmail.com">contact@idevelopit.com</a></p>
                 </div>
               </div>
             </motion.div>
@@ -188,42 +214,16 @@ const ContactForm = () => {
             >
               <div className="flex items-center mb-4">
                 <div className="rounded-lg p-3 mr-4">
-                  <Clock className="w-6 h-6 text-white" />
+                  <Clock className="w-6 h-6 text-white" /> 
                 </div>
                 <div>
-                  <h3 className="text-white font-semibold">Business Hours</h3>
-                  <p className="text-gray-400">Mon-Fri: 9AM-6PM EST</p>
+                  <h3 className="text-white font-semibold">Available for Hire</h3>
+                  <p className="text-gray-400">Let’s build something amazing together.</p>
                 </div>
               </div>
             </motion.div>
-
-            
-            <motion.div
-              variants={cardVariants}
-              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-              className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6"
-            >
-            <div className="flex items-center mb-4">
-                <div className="rounded-lg p-3 mr-4 bg-white/10">
-                    <Share2 className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                    <h3 className="text-white font-semibold">Follow Us</h3>
-                    <div className="flex space-x-4 mt-2 text-xl text-white">
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                            <FaFacebook className="hover:text-blue-500 transition-colors duration-200" />
-                        </a>
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                            <FaInstagram className="hover:text-pink-500 transition-colors duration-200" />
-                        </a>
-                        <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">
-                            <FaTiktok className="hover:text-gray-300 transition-colors duration-200" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-            </motion.div>
           </motion.div>
+          </div>
 
           {/* Contact Form */}
           <motion.div
@@ -234,6 +234,18 @@ const ContactForm = () => {
               variants={cardVariants}
               className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-8"
             >
+              {/* Error Message */}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center space-x-3"
+                >
+                  <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+                  <p className="text-red-400 text-sm">{error}</p>
+                </motion.div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Name Field */}
@@ -321,10 +333,12 @@ const ContactForm = () => {
                       className="w-full bg-black/20 border border-white/20 rounded-lg px-4 py-4 text-white focus:border-white focus:outline-none focus:ring-2 focus:ring-white/20 transition-all duration-200 appearance-none cursor-pointer"
                     >
                       <option value="" className="bg-black/70">Select a Service</option>
-                      <option value="web-development" className="bg-black/70">Web Development</option>
-                      <option value="mobile-app" className="bg-black/70">Mobile App</option>
-                      <option value="ui-ux-design" className="bg-black/70">UI/UX Design</option>
-                      <option value="consulting" className="bg-black/70">Consulting</option>
+                      <option value="frontend-development" className="bg-black/70">Frontend Development</option>
+                      <option value="backend-development" className="bg-black/70">Backend Development</option>
+                      <option value="fullstack-development" className="bg-black/70">Fullstack Development</option>
+                      <option value="database-design" className="bg-black/70">Database Design</option>
+                      <option value="cloud-deployment" className="bg-black/70">Cloud Deployment</option>
+                      <option value="performance-optimization" className='bg-black/70'>Performance Optimization</option>
                       <option value="other" className="bg-black/70">Other</option>
                     </select>
                   </motion.div>

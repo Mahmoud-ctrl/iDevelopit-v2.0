@@ -24,3 +24,19 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduce paint complexity during scroll */
+.hero-section {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize motion elements */
+[data-framer-motion] {
+  transform-style: preserve-3d;
+}

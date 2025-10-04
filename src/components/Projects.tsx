@@ -18,59 +18,43 @@ interface Project {
   category: string;
 }
 
-interface ProjectsProps {
-  heroScrollProgress: number;
-}
-
 // --- Project Data ---
 const projects: Project[] = [
   {
     id: 1,
-    title: "NEXUS",
+    title: "FASHION",
     subtitle: "E-Commerce Revolution",
     description: "Redefining online shopping with immersive product experiences and seamless checkout flows that convert visitors into loyal customers.",
     image: "https://lebwork.b-cdn.net/stuff/photo-1441986300917-64674bd600d8.jpg",
     tech: ["React", "Node.js", "Three.js", "Stripe"],
-    github: "#",
-    live: "#",
-    year: "2024",
+    github: "https://github.com/Mahmoud-ctrl/ClothStore",
+    live: "https://fashionhub12.netlify.app/",
+    year: "2025",
     category: "E-Commerce"
   },
   {
     id: 2,
-    title: "VELOCITY",
-    subtitle: "Financial Innovation",
-    description: "Next-generation banking platform that transforms complex financial operations into intuitive, secure, and lightning-fast experiences.",
+    title: "SmartTech",
+    subtitle: "Tech Innovation",
+    description: "Next-generation technology that revolutionizes the way businesses operate and connect with their customers.",
     image: "https://lebwork.b-cdn.net/stuff/images_PC%20System.jpg",
     tech: ["React Native", "TypeScript", "Blockchain", "AI"],
-    github: "#",
-    live: "#",
+    github: "https://github.com/Mahmoud-ctrl/SmartTech",
+    live: "https://aidibysmartech.com/",
     year: "2024",
     category: "FinTech"
   },
   {
     id: 3,
-    title: "LUMINA",
-    subtitle: "Brand Transformation",
-    description: "Complete visual identity system that captures the essence of sustainable luxury and resonates across all digital touchpoints.",
+    title: "BookNest",
+    subtitle: "Dental Care Redefined",
+    description: "Revolutionizing dental care with cutting-edge technology and personalized patient experiences.",
     image: "https://lebwork.b-cdn.net/stuff/istockphoto-1152845300-2048x2048.jpg",
-    tech: ["Figma", "After Effects", "WebGL", "Webflow"],
-    live: "#",
+    tech: ["Figma", "Nodejs", "TypeScript", "MySQL"],
+    live: "https://preeminent-kashata-bc8bb1.netlify.app/",
     year: "2024",
     category: "Branding"
   },
-  {
-    id: 4,
-    title: "AURORA",
-    subtitle: "AI-Powered Analytics",
-    description: "Revolutionary data visualization platform that transforms complex datasets into actionable insights through intelligent automation.",
-    image: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?q=80&w=2340&auto=format&fit=crop",
-    tech: ["Python", "TensorFlow", "D3.js", "FastAPI"],
-    github: "#",
-    live: "#",
-    year: "2024",
-    category: "AI/ML"
-  }
 ];
 
 // --- Individual Project Panel ---
@@ -78,8 +62,7 @@ const ProjectPanel: React.FC<{
   project: Project; 
   index: number; 
   isActive: boolean;
-  heroProgress: number;
-}> = ({ project, index, isActive, heroProgress }) => {
+}> = ({ project, index, isActive }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -87,10 +70,7 @@ const ProjectPanel: React.FC<{
       id='projects'
       className="min-w-full h-screen flex items-center justify-center relative overflow-hidden"
       initial={{ opacity: 0, x: 100 }}
-      animate={{ 
-        opacity: heroProgress > 0.5 ? 1 : 0,
-        x: heroProgress > 0.5 ? 0 : 100
-      }}
+      animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : 100 }}
       transition={{ 
         duration: 1.2,
         delay: index * 0.2,
@@ -121,14 +101,14 @@ const ProjectPanel: React.FC<{
       </motion.div>
 
       {/* Content Grid */}
-      <div className="relative z-20 max-w-7xl mx-auto px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center h-full">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center h-full min-h-screen py-16 lg:py-0">
           
           {/* Left Content - Project Info */}
-          <div className="lg:col-span-6 space-y-8">
+          <div className="lg:col-span-6 space-y-6 lg:space-y-8 text-center lg:text-left">
             {/* Project Number & Meta */}
             <motion.div
-              className="flex items-start gap-6"
+              className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-6"
               initial={{ opacity: 0, x: -50 }}
               animate={{
                 opacity: isActive ? 1 : 0.7,
@@ -136,14 +116,14 @@ const ProjectPanel: React.FC<{
               }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <span className="text-7xl md:text-9xl font-bold text-white/20 leading-none">
+              <span className="text-6xl md:text-7xl lg:text-9xl font-bold text-white/20 leading-none">
                 {String(index + 1).padStart(2, '0')}
               </span>
-              <div className="pt-4">
+              <div className="pt-2 lg:pt-4">
                 <p className="text-white/60 text-sm tracking-widest uppercase mb-2">
                   {project.year} • {project.category}
                 </p>
-                <div className="w-16 h-px bg-white/30" />
+                <div className="w-16 h-px bg-white/30 mx-auto lg:mx-0" />
               </div>
             </motion.div>
 
@@ -155,18 +135,19 @@ const ProjectPanel: React.FC<{
                 y: isActive ? 0 : 20,
               }}
               transition={{ duration: 0.8, delay: 0.3 }}
+              className="space-y-2 lg:space-y-4"
             >
-              <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-[0.9] mb-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[0.9]">
                 {project.title}
               </h2>
-              <h3 className="text-xl md:text-2xl lg:text-3xl font-light text-white/80 mb-6">
+              <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-white/80">
                 {project.subtitle}
               </h3>
             </motion.div>
 
             {/* Description */}
             <motion.p 
-              className="text-base md:text-lg text-white/70 leading-relaxed max-w-md"
+              className="text-sm sm:text-base lg:text-lg text-white/70 leading-relaxed max-w-md mx-auto lg:mx-0"
               initial={{ opacity: 0, y: 20 }}
               animate={{
                 opacity: isActive ? 1 : 0.6,
@@ -179,7 +160,7 @@ const ProjectPanel: React.FC<{
 
             {/* Tech Stack */}
             <motion.div 
-              className="flex flex-wrap gap-2"
+              className="flex flex-wrap gap-2 justify-center lg:justify-start"
               initial={{ opacity: 0, y: 20 }}
               animate={{
                 opacity: isActive ? 1 : 0.7,
@@ -190,7 +171,7 @@ const ProjectPanel: React.FC<{
               {project.tech.map((tech) => (
                 <motion.span
                   key={tech}
-                  className="px-3 py-1.5 text-sm font-medium text-white/80 border border-white/20 rounded-full backdrop-blur-sm"
+                  className="px-3 py-1.5 text-xs sm:text-sm font-medium text-white/80 border border-white/20 rounded-full backdrop-blur-sm"
                   whileHover={{ 
                     backgroundColor: 'rgba(255,255,255,0.1)',
                     scale: 1.05 
@@ -204,7 +185,7 @@ const ProjectPanel: React.FC<{
 
             {/* Action Buttons */}
             <motion.div 
-              className="flex gap-4 pt-4"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 items-center lg:items-start"
               initial={{ opacity: 0, y: 20 }}
               animate={{
                 opacity: isActive ? 1 : 0.7,
@@ -215,7 +196,7 @@ const ProjectPanel: React.FC<{
               {project.live && (
                 <motion.a
                   href={project.live}
-                  className="flex items-center gap-2 px-6 py-3 bg-white text-black font-medium rounded-full hover:bg-white/90 transition-all duration-300 group text-sm md:text-base"
+                  className="flex items-center gap-2 px-6 py-3 bg-white text-black font-medium rounded-full hover:bg-white/90 transition-all duration-300 group text-sm md:text-base w-full sm:w-auto justify-center"
                   whileHover={{ scale: 1.05, gap: '0.75rem' }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -229,7 +210,7 @@ const ProjectPanel: React.FC<{
               {project.github && (
                 <motion.a
                   href={project.github}
-                  className="flex items-center gap-2 px-6 py-3 border border-white/30 text-white font-medium rounded-full hover:bg-white/10 transition-all duration-300 group text-sm md:text-base"
+                  className="flex items-center gap-2 px-6 py-3 border border-white/30 text-white font-medium rounded-full hover:bg-white/10 transition-all duration-300 group text-sm md:text-base w-full sm:w-auto justify-center"
                   whileHover={{ scale: 1.05, gap: '0.75rem' }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -240,8 +221,8 @@ const ProjectPanel: React.FC<{
             </motion.div>
           </div>
 
-          {/* Right Content - Visual Element */}
-          <div className="lg:col-span-5 lg:col-start-8 flex justify-center lg:justify-end">
+          {/* Right Content - Visual Element (Hidden on small screens) */}
+          <div className="hidden lg:flex lg:col-span-5 lg:col-start-8 justify-center lg:justify-end">
             <motion.div
               className="relative w-full max-w-md aspect-[3/4] rounded-2xl overflow-hidden"
               animate={{
@@ -284,7 +265,7 @@ const ProjectPanel: React.FC<{
 };
 
 // --- Main Horizontal Projects Component ---
-const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => {
+const HorizontalProjects = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -300,9 +281,9 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
   });
 
   // Detect if the section is in view
-  const isInView = useInView(containerRef, { amount: 0.5, once: false });
+  const isInView = useInView(containerRef, { amount: 0.1, once: false });
 
-  // Navigation functions - wrapped in useCallback to prevent unnecessary re-renders
+  // Navigation functions
   const scrollToProject = useCallback((index: number) => {
     if (!scrollContainerRef.current) return;
     
@@ -328,11 +309,13 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
     }
   }, [currentIndex, scrollToProject]);
 
-  // Keyboard navigation
+  // Keyboard navigation (desktop only)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') prevProject();
-      if (e.key === 'ArrowRight') nextProject();
+      if (window.innerWidth >= 768) { // Only enable keyboard nav on desktop
+        if (e.key === 'ArrowLeft') prevProject();
+        if (e.key === 'ArrowRight') nextProject();
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -342,26 +325,40 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
   // Touch/swipe handling for mobile
   useEffect(() => {
     let startX = 0;
+    let startY = 0;
     let isDragging = false;
 
     const handleTouchStart = (e: TouchEvent) => {
       startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
       isDragging = true;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       if (!isDragging) return;
-      e.preventDefault();
+      
+      const currentX = e.touches[0].clientX;
+      const currentY = e.touches[0].clientY;
+      const diffX = Math.abs(currentX - startX);
+      const diffY = Math.abs(currentY - startY);
+      
+      // Only prevent scroll if horizontal movement is greater than vertical
+      if (diffX > diffY && diffX > 10) {
+        e.preventDefault();
+      }
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
       if (!isDragging) return;
       
       const endX = e.changedTouches[0].clientX;
-      const diff = startX - endX;
+      const endY = e.changedTouches[0].clientY;
+      const diffX = startX - endX;
+      const diffY = Math.abs(startY - endY);
       
-      if (Math.abs(diff) > 50) { // Minimum swipe distance
-        if (diff > 0) {
+      // Only trigger navigation if horizontal swipe is dominant and significant
+      if (Math.abs(diffX) > 50 && Math.abs(diffX) > diffY) {
+        if (diffX > 0) {
           nextProject();
         } else {
           prevProject();
@@ -403,14 +400,13 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
             project={project}
             index={index}
             isActive={index === currentIndex}
-            heroProgress={heroScrollProgress}
           />
         ))}
       </motion.div>
 
-      {/* Navigation Controls - Only show when section is in view */}
+      {/* Navigation Controls - Desktop Only */}
       {isInView && (
-        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2">
           <motion.div 
             className="flex items-center gap-4 px-6 py-3 bg-black/50 backdrop-blur-sm rounded-full border border-white/20"
             initial={{ opacity: 0, y: 20 }}
@@ -418,11 +414,11 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.5 }}
           >
-            {/* Previous Button */}
+            {/* Previous Button - Desktop Only */}
             <motion.button
               onClick={prevProject}
               disabled={!canScrollLeft}
-              className="p-2 rounded-full text-white transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              className="hidden md:flex p-2 rounded-full text-white transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
               whileHover={canScrollLeft ? { scale: 1.1, backgroundColor: 'rgba(255,255,255,0.1)' } : {}}
               whileTap={canScrollLeft ? { scale: 0.9 } : {}}
             >
@@ -446,11 +442,11 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
               ))}
             </div>
 
-            {/* Next Button */}
+            {/* Next Button - Desktop Only */}
             <motion.button
               onClick={nextProject}
               disabled={!canScrollRight}
-              className="p-2 rounded-full text-white transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              className="hidden md:flex p-2 rounded-full text-white transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
               whileHover={canScrollRight ? { scale: 1.1, backgroundColor: 'rgba(255,255,255,0.1)' } : {}}
               whileTap={canScrollRight ? { scale: 0.9 } : {}}
             >
@@ -460,10 +456,10 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
         </div>
       )}
 
-      {/* Project Counter - Only show when section is in view */}
+      {/* Project Counter - Desktop Only */}
       {isInView && (
         <motion.div 
-          className="fixed top-1/2 right-8 transform -translate-y-1/2 z-50 text-white/60"
+          className="hidden lg:block fixed top-1/2 right-8 transform -translate-y-1/2 text-white/60"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 20 }}
@@ -477,10 +473,10 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
         </motion.div>
       )}
 
-      {/* Progress Bar - Only show when section is in view */}
+      {/* Progress Bar */}
       {isInView && (
         <motion.div 
-          className="fixed bottom-0 left-0 right-0 h-1 bg-white/10 z-50"
+          className="fixed bottom-0 left-0 right-0 h-1 bg-white/10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -496,16 +492,29 @@ const HorizontalProjects: React.FC<ProjectsProps> = ({ heroScrollProgress }) => 
         </motion.div>
       )}
 
-      {/* Keyboard Hint - Only show when section is in view */}
+      {/* Keyboard Hint - Desktop Only */}
       {isInView && (
         <motion.div
-          className="fixed bottom-20 right-8 text-white/40 text-xs z-40"
+          className="hidden lg:block fixed bottom-20 right-8 text-white/40 text-xs"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ delay: 2, duration: 1 }}
         >
           <p>← → Navigate</p>
+        </motion.div>
+      )}
+
+      {/* Mobile Swipe Hint */}
+      {isInView && (
+        <motion.div
+          className="block lg:hidden fixed bottom-20 left-1/2 transform -translate-x-1/2 text-white/40 text-xs text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ delay: 2, duration: 1 }}
+        >
+          <p>← Swipe to navigate →</p>
         </motion.div>
       )}
     </section>

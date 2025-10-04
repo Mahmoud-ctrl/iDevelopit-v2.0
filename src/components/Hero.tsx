@@ -1,15 +1,12 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { motion, useTransform, useScroll } from 'framer-motion';
 import LiquidEther from './ui/LiquidEther';
 import Navbar from './Navbar';
 
-interface HeroProps {
-  onScrollProgress?: (progress: number) => void;
-}
 
-const Hero: React.FC<HeroProps> = ({ onScrollProgress }) => {
+const Hero: React.FC = () => {
   const containerRef = useRef<HTMLElement>(null);
   
   const { scrollYProgress } = useScroll({
@@ -17,27 +14,30 @@ const Hero: React.FC<HeroProps> = ({ onScrollProgress }) => {
     offset: ["start start", "end start"]
   });
 
-  useEffect(() => {
-    return scrollYProgress.on("change", (progress) => {
-      onScrollProgress?.(progress);
-    });
-  }, [scrollYProgress, onScrollProgress]);
-
   const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
     <>
-      <Navbar scrollProgress={scrollYProgress.get()} />
+      <Navbar />
       
       <section 
         id="home"
         ref={containerRef}
         className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
-        style={{ position: 'relative' }}
+        style={{ 
+          position: 'relative',
+          willChange: 'transform',
+          transform: 'translateZ(0)'
+        }}
+      >
+        <div 
+          className="absolute inset-0 pointer-events-auto"
+          style={{
+            willChange: 'auto',
+            contain: 'layout style paint', 
+          }}
         >
-        {/* LiquidEther Background - Fixed */}
-        <div className="absolute inset-0 pointer-events-auto">
           <LiquidEther
             colors={['#5227FF', '#ffffff', '#888888']}
             mouseForce={20}
@@ -58,7 +58,11 @@ const Hero: React.FC<HeroProps> = ({ onScrollProgress }) => {
         </div>
 
         <motion.div 
-          style={{ y, opacity }}
+          style={{ 
+            y, 
+            opacity,
+            willChange: 'transform, opacity',
+          }}
           className="relative z-20 text-center text-white px-6 max-w-4xl mx-auto pointer-events-auto"
         >
           <motion.div
@@ -77,6 +81,9 @@ const Hero: React.FC<HeroProps> = ({ onScrollProgress }) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
+            style={{
+              textRendering: 'optimizeSpeed'
+            }}
           >
             iDevelopit
           </motion.h1>
@@ -103,18 +110,25 @@ const Hero: React.FC<HeroProps> = ({ onScrollProgress }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.2 }}
           >
-            <motion.button 
-              className="px-8 py-3 border border-white text-white hover:bg-white hover:text-black transition-all duration-300 text-sm tracking-wider uppercase cursor-pointer"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Hire Us              
-            </motion.button>
+          <motion.button
+            className="px-8 py-3 border border-white text-white hover:bg-white hover:text-black transition-all duration-300 text-sm tracking-wider uppercase cursor-pointer"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            style={{ willChange: 'transform' }}
+            onClick={() => {
+              document.querySelector('#contact')?.scrollIntoView({ 
+                behavior: 'smooth' 
+              });
+            }}
+          >
+            Hire Us
+          </motion.button>
             
             <motion.button 
               className="px-8 py-3 text-gray-400 hover:text-white transition-all duration-300 text-sm tracking-wider uppercase cursor-pointer"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              style={{ willChange: 'transform' }}
             >
               Start a Project
             </motion.button>
@@ -137,11 +151,12 @@ const Hero: React.FC<HeroProps> = ({ onScrollProgress }) => {
           </motion.div>
         </motion.div>
 
-
-        {/* Scroll indicator */}
         <motion.div 
           className="absolute bottom-8 left-1/2 transform -translate-x-1/2 pointer-events-none"
-          style={{ opacity }}
+          style={{ 
+            opacity,
+            willChange: 'opacity' 
+          }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 2 }}
@@ -150,6 +165,7 @@ const Hero: React.FC<HeroProps> = ({ onScrollProgress }) => {
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
             className="w-px h-16 bg-gradient-to-b from-transparent via-white to-transparent"
+            style={{ willChange: 'transform' }}
           />
         </motion.div>
       </section>
